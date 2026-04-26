@@ -1,0 +1,92 @@
+name: Create new release
+
+on:
+  push:
+    branches:
+      - "**"
+    tags:
+      - "!**"
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    #runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v6
+    - name: Install fuse and libfuse2
+      run: sudo apt install fuse libfuse2
+
+    - name: Get appimagetool
+      run: |
+        set -x
+        version_go_appimage=$(wget -q -O - https://api.github.com/repos/probonopd/go-appimage/releases | grep "\"name.*appimagetool-.*-x86_64.AppImage\"" | head -n 1 | cut -d '-' -f2)
+        echo "version_go_appimage: $version_go_appimage"
+        wget -q "https://github.com/probonopd/go-appimage/releases/download/continuous/appimagetool-$version_go_appimage-x86_64.AppImage" -O appimagetool-x86_64.AppImage
+        chmod +x appimagetool-x86_64.AppImage
+        pwd; ls -lah
+
+    - name: Get wine AppImage
+      run: |
+        set -x
+        wget -q https://github.com/mmtrt/WINE_AppImage/releases/download/continuous-stable/wine-stable_11.0-x86_64.AppImage
+        fileName=$(ls wine*.AppImage)
+        chmod +x "$fileName"
+        ./"$fileName" --appimage-extract
+        pwd; ls -lah
+
+    - name: Make AppImage
+      run: |
+        set -x
+        tag=1 #1
+        version=$(grep -o "Deffy:.*" README.md | cut -d ' ' -f2)
+        echo "Deffy version: $version - Tag: $tag"
+
+        cp README.md squashfs-root/
+        cd AppDir/
+
+        wget -q https://github.com/ryuuzaki42/Deffy_AppImage_2/releases/download/6.0.0_0_exe/Deffy.desktop
+        wget -q https://github.com/ryuuzaki42/Deffy_AppImage_2/releases/download/6.0.0_0_exe/Deffy.png
+        wget -q https://github.com/ryuuzaki42/Deffy_AppImage_2/releases/download/${version}_0_exe/Deffy.exe
+        pwd; ls -lah
+        rm .DirIcon wine.svg org.winehq.wine.desktop
+
+        mv AppRun AppRun_2
+        mv AppRun.env AppRun_2.env
+        #sed -i 's/.wine-appimage-stable/.config\/Deffy_AppImage/g' wrapper # Change config folder
+
+        # Remove 32 bits
+        cd opt/wine-stable/lib/wine/
+        rm -r i386-windows/
+        cd ../../../../
+
+        echo '#!/bin/bash
+        HERE=$(cd "${0%/*}" && echo $PWD)
+
+        folder_name_RAM="Deffy_AppImage_$(date +%d_%m_%Y)"
+        mkdir -p /dev/shm/$folder_name_RAM/
+        WINEDLLOVERRIDES="mscoree=d;mshtml=d" WINEPREFIX=/dev/shm/$folder_name_RAM "$HERE"/AppRun_2 "$HERE"/Deffy.exe
+        rm -r /dev/shm/$folder_name_RAM/' > AppRun
+        chmod +x AppRun
+
+        cd ../
+        ARCH=x86_64 VERSION="${version}-${tag}_JB" ./appimagetool-x86_64.AppImage AppDir/
+        pwd; ls -lah
+
+    - name: Generate MD5
+      run: |
+        set -x
+        fileName=$(ls Deffy*.AppImage)
+        echo "fileName: $fileName"
+        md5sum "${fileName}" > "${fileName}".md5
+        pwd; ls -lah
+
+    - uses: xresloader/upload-to-github-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        file: "Deffy*.AppImage; Deffy*.zsync; Deffy*.md5"
+        #overwrite: true
+        verbose: true
+        draft: false
+        default_release_name: "Deffy V in AppImage"
