@@ -29,7 +29,7 @@ jobs:
     - name: Get CrossMobile AppImage
       run: |
         set -x
-        wget -q https://github.com/ryuuzaki42/sacd_extract_AppImage/releases/download/main-0000/CrossMobile-3.4.0.x86_64.appimage
+        wget -q https://github.com/ryuuzaki42/sacd_extract_AppImage/releases/download/main-0000/CrossMobile-3.4.0.x86_64.AppImage
         fileName=$(ls CrossMobile*.AppImage)
         chmod +x "$fileName"
         ./"$fileName" --appimage-extract
