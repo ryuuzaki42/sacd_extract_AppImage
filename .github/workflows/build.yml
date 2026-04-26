@@ -33,6 +33,7 @@ jobs:
         fileName=$(ls CrossMobile*.AppImage)
         chmod +x "$fileName"
         ./"$fileName" --appimage-extract
+        rm -v "$fileName"
         pwd; ls -lah
 
     - name: Make AppImage
@@ -63,7 +64,7 @@ jobs:
         chmod +x AppRun
 
         cd ../
-        ARCH=x86_64 VERSION="${version}-${tag}_JB" ./appimagetool-x86_64.AppImage AppDir/
+        ARCH=x86_64 VERSION="${version}-${tag}_JB" ./appimagetool-x86_64.AppImage squashfs-root/
         pwd; ls -lah
 
     - name: Generate MD5
