@@ -26,11 +26,11 @@ jobs:
         chmod +x appimagetool-x86_64.AppImage
         pwd; ls -lah
 
-    - name: Get wine AppImage
+    - name: Get CrossMobile AppImage
       run: |
         set -x
-        wget -q https://github.com/mmtrt/WINE_AppImage/releases/download/continuous-stable/wine-stable_11.0-x86_64.AppImage
-        fileName=$(ls wine*.AppImage)
+        wget -q https://github.com/ryuuzaki42/sacd_extract_AppImage/releases/download/main-0000/CrossMobile-3.4.0.x86_64.appimage
+        fileName=$(ls CrossMobile*.AppImage)
         chmod +x "$fileName"
         ./"$fileName" --appimage-extract
         pwd; ls -lah
@@ -39,8 +39,8 @@ jobs:
       run: |
         set -x
         tag=1 #1
-        version=$(grep -o "Deffy:.*" README.md | cut -d ' ' -f2)
-        echo "Deffy version: $version - Tag: $tag"
+        version=$(grep -o "sacd_extract:.*" README.md | cut -d ' ' -f2)
+        echo "sacd_extract version: $version - Tag: $tag"
 
         cp README.md squashfs-root/
         cd AppDir/
