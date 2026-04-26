@@ -48,8 +48,8 @@ jobs:
         wget -q https://github.com/ryuuzaki42/sacd_extract_AppImage/releases/download/main-0001/SACDExtractGUI.zip
         wget -q https://github.com/ryuuzaki42/sacd_extract_AppImage/releases/download/main-0001/sacd_extract-${version}-linux.zip
 
-        unzip SACDExtractGUI.zip
-        unzip sacd_extract-${version}-linux.zip
+        unzip SACDExtractGUI.zip -d sacd_extract/
+        unzip sacd_extract-${version}-linux.zip -d sacd_extract/
 
         #wget -q https://github.com/ryuuzaki42/Deffy_AppImage_2/releases/download/6.0.0_0_exe/Deffy.desktop
         #wget -q https://github.com/ryuuzaki42/Deffy_AppImage_2/releases/download/6.0.0_0_exe/Deffy.png
@@ -59,7 +59,7 @@ jobs:
 
         echo '#!/bin/bash
         HERE=$(cd "${0%/*}" && echo $PWD)
-        $HERE/runtime/bin/java -jar SACDExtractGUI/SACDExtractGUI.jar' > AppRun
+        $HERE/runtime/bin/java -jar sacd_extract/SACDExtractGUI.jar' > AppRun
         chmod +x AppRun
 
         cd ../
