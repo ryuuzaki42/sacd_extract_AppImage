@@ -43,30 +43,23 @@ jobs:
         echo "sacd_extract version: $version - Tag: $tag"
 
         cp README.md squashfs-root/
-        cd AppDir/
+        cd squashfs-root/
 
-        wget -q https://github.com/ryuuzaki42/Deffy_AppImage_2/releases/download/6.0.0_0_exe/Deffy.desktop
-        wget -q https://github.com/ryuuzaki42/Deffy_AppImage_2/releases/download/6.0.0_0_exe/Deffy.png
-        wget -q https://github.com/ryuuzaki42/Deffy_AppImage_2/releases/download/${version}_0_exe/Deffy.exe
+        wget -q https://github.com/ryuuzaki42/sacd_extract_AppImage/releases/download/main-0001/SACDExtractGUI.zip
+        wget -q https://github.com/ryuuzaki42/sacd_extract_AppImage/releases/download/main-0001/sacd_extract-${version}-linux.zip
+
+        unzip SACDExtractGUI.zip
+        unzip sacd_extract-${version}-linux.zip
+
+        #wget -q https://github.com/ryuuzaki42/Deffy_AppImage_2/releases/download/6.0.0_0_exe/Deffy.desktop
+        #wget -q https://github.com/ryuuzaki42/Deffy_AppImage_2/releases/download/6.0.0_0_exe/Deffy.png
         pwd; ls -lah
-        rm .DirIcon wine.svg org.winehq.wine.desktop
 
         mv AppRun AppRun_2
-        mv AppRun.env AppRun_2.env
-        #sed -i 's/.wine-appimage-stable/.config\/Deffy_AppImage/g' wrapper # Change config folder
-
-        # Remove 32 bits
-        cd opt/wine-stable/lib/wine/
-        rm -r i386-windows/
-        cd ../../../../
 
         echo '#!/bin/bash
         HERE=$(cd "${0%/*}" && echo $PWD)
-
-        folder_name_RAM="Deffy_AppImage_$(date +%d_%m_%Y)"
-        mkdir -p /dev/shm/$folder_name_RAM/
-        WINEDLLOVERRIDES="mscoree=d;mshtml=d" WINEPREFIX=/dev/shm/$folder_name_RAM "$HERE"/AppRun_2 "$HERE"/Deffy.exe
-        rm -r /dev/shm/$folder_name_RAM/' > AppRun
+        $HERE/runtime/bin/java -jar SACDExtractGUI/SACDExtractGUI.jar' > AppRun
         chmod +x AppRun
 
         cd ../
@@ -76,7 +69,7 @@ jobs:
     - name: Generate MD5
       run: |
         set -x
-        fileName=$(ls Deffy*.AppImage)
+        fileName=$(ls sacd_extract*.AppImage)
         echo "fileName: $fileName"
         md5sum "${fileName}" > "${fileName}".md5
         pwd; ls -lah
@@ -85,8 +78,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        file: "Deffy*.AppImage; Deffy*.zsync; Deffy*.md5"
+        file: "sacd_extract*.AppImage; sacd_extract*.zsync; sacd_extract*.md5"
         #overwrite: true
         verbose: true
         draft: false
-        default_release_name: "Deffy V in AppImage"
+        default_release_name: "sacd_extract V in AppImage"
