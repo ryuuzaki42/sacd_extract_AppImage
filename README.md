@@ -6,7 +6,7 @@ sacd extract is a swiss army knife when it comes to SACD ripping, as this softwa
 https://www.videohelp.com/software/sacd-extract
 
 ## Repository: https://github.com/ryuuzaki42/sacd_extract_AppImage
-    sacd_extract: 0.3.9.3-173
+    sacd_extract: 0.3.9.3-107
 
 ### Using JRE in the AppImage from https://github.com/crossmob/CrossMobile
 
