@@ -58,7 +58,7 @@ jobs:
         #rm crossmobile.png
         mv crossmobile.png sacd_extract.png
 
-        rm app/ # Folder of CrossMobile App
+        rm -rv app/ # Folder of CrossMobile App
 
         echo '[Desktop Entry]
         Type=Application
