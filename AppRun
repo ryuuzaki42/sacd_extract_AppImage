@@ -1,6 +1,4 @@
 #!/bin/bash
-set -x
-
 HERE=$(cd "${0%/*}" && echo $PWD)
 
 echo "XDG_CONFIG_HOME: $XDG_CONFIG_HOME"
@@ -9,12 +7,12 @@ if [ "$XDG_CONFIG_HOME" != "" ]; then # If use --appimage-portable-config
 else # Default mode, use ~/.config/
     config_path="$HOME/.config/sacd_extract_AppImage"
 fi
-config_path=$(echo "$config_path/" | sed 's/\/\//\//g') # // to /
 
+config_path=$(echo "$config_path/" | sed 's/\/\//\//g') # // to /
 echo "config_path $config_path"
 mkdir "$config_path"
 
-cp "$HERE/sacd_extract/sacd_extract" "$config_path/"
+cp "$HERE/sacd_extract/sacd_extract" "$config_path/" # Copy of sacd_extract to $config_path
 
 if [ ! -f "$config_path/SACDExtractGUI.properties" ]; then # Check if configuration file exists
     echo "Configuration not found! - Coping default one"
@@ -23,8 +21,7 @@ fi
 echo "sacd_extract configuration file: $config_path/SACDExtractGUI.properties"
 cd "$config_path/"
 
-config_path_sed=$(echo "$config_path" | sed 's/\//\\\//g')
+config_path_sed=$(echo "$config_path" | sed 's/\//\\\//g') # / to \/ to use in sed
 sed -i "s/FOLDER\//$config_path_sed/1" SACDExtractGUI.properties
-cat SACDExtractGUI.properties
 
 $HERE/runtime/bin/java -jar $HERE/sacd_extract/SACDExtractGUI.jar
