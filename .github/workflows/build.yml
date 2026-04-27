@@ -29,7 +29,7 @@ jobs:
     - name: Get CrossMobile AppImage
       run: |
         set -x
-        wget -q https://github.com/ryuuzaki42/sacd_extract_AppImage/releases/download/main-0000/CrossMobile-3.4.0.x86_64.AppImage
+        wget -q https://github.com/ryuuzaki42/sacd_extract_AppImage/releases/download/main-0001/CrossMobile-3.4.0.x86_64.AppImage
         fileName=$(ls CrossMobile*.AppImage)
         chmod +x "$fileName"
         ./"$fileName" --appimage-extract
@@ -50,8 +50,8 @@ jobs:
         cp SACDExtractGUI.properties squashfs-root/sacd_extract/
         cd squashfs-root/
 
-        wget -q https://github.com/ryuuzaki42/sacd_extract_AppImage/releases/download/main-0001/SACDExtractGUI.zip
-        wget -q https://github.com/ryuuzaki42/sacd_extract_AppImage/releases/download/main-0001/sacd_extract-${version}-linux.zip
+        wget -q https://github.com/ryuuzaki42/sacd_extract_AppImage/releases/download/main-0002/SACDExtractGUI.zip
+        wget -q https://github.com/ryuuzaki42/sacd_extract_AppImage/releases/download/main-0002/sacd_extract-${version}-linux.zip
 
         unzip SACDExtractGUI.zip -d sacd_extract/
         unzip sacd_extract-${version}-linux.zip -d sacd_extract/
