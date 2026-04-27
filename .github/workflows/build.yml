@@ -45,6 +45,7 @@ jobs:
 
         mkdir -p squashfs-root/sacd_extract/
         cp README.md squashfs-root/
+        rm -v squashfs-root/AppRun
         cp AppRun squashfs-root/
         cp SACDExtractGUI.properties squashfs-root/sacd_extract/
         cd squashfs-root/
@@ -57,7 +58,7 @@ jobs:
         rm -v SACDExtractGUI.zip sacd_extract-${version}-linux.zip
         pwd; ls -lah
 
-        rm .DirIcon AppRun crossmobile.desktop
+        rm .DirIcon crossmobile.desktop
 
         #rm crossmobile.png
         mv crossmobile.png sacd_extract.png
