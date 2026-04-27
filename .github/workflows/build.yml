@@ -43,9 +43,10 @@ jobs:
         version=$(grep -o "sacd_extract:.*" README.md | cut -d ' ' -f2)
         echo "sacd_extract version: $version - Tag: $tag"
 
-        cp README.md squashfs-root/        
+        mkdir -p squashfs-root/sacd_extract/
+        cp README.md squashfs-root/
         cp AppRun squashfs-root/
-        cp SACDExtractGUI.properties squashfs-root/
+        cp SACDExtractGUI.properties squashfs-root/sacd_extract/
         cd squashfs-root/
 
         wget -q https://github.com/ryuuzaki42/sacd_extract_AppImage/releases/download/main-0001/SACDExtractGUI.zip
@@ -53,6 +54,7 @@ jobs:
 
         unzip SACDExtractGUI.zip -d sacd_extract/
         unzip sacd_extract-${version}-linux.zip -d sacd_extract/
+        rm -v SACDExtractGUI.zip sacd_extract-${version}-linux.zip
         pwd; ls -lah
 
         rm .DirIcon AppRun crossmobile.desktop
