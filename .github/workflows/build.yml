@@ -56,6 +56,24 @@ jobs:
         #wget -q https://github.com/ryuuzaki42/Deffy_AppImage_2/releases/download/6.0.0_0_exe/Deffy.png
         pwd; ls -lah
 
+        rm .DirIcon
+        #rm AppRun
+        rm crossmobile.desktop
+        #rm crossmobile.png
+        mv crossmobile.png sacd_extract.png
+
+        echo '[Desktop Entry]
+        Type=Application
+        Name=sacd_extract
+        Exec=sacd_extract
+        Comment=sacd_extract
+        Icon=sacd_extract
+        Categories=Utility
+        Terminal=false' > sacd_extract.desktop
+        chmod +x sacd_extract.desktop
+        cat sacd_extract.desktop
+        pwd; ls -lah
+
         mv AppRun AppRun_2
 
         echo '#!/bin/bash
