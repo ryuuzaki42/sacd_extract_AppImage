@@ -51,16 +51,14 @@ jobs:
 
         unzip SACDExtractGUI.zip -d sacd_extract/
         unzip sacd_extract-${version}-linux.zip -d sacd_extract/
-
-        #wget -q https://github.com/ryuuzaki42/Deffy_AppImage_2/releases/download/6.0.0_0_exe/Deffy.desktop
-        #wget -q https://github.com/ryuuzaki42/Deffy_AppImage_2/releases/download/6.0.0_0_exe/Deffy.png
         pwd; ls -lah
 
-        rm .DirIcon
-        #rm AppRun
-        rm crossmobile.desktop
+        rm .DirIcon AppRun crossmobile.desktop
+
         #rm crossmobile.png
         mv crossmobile.png sacd_extract.png
+
+        rm app/ # Folder of CrossMobile App
 
         echo '[Desktop Entry]
         Type=Application
@@ -74,11 +72,9 @@ jobs:
         cat sacd_extract.desktop
         pwd; ls -lah
 
-        mv AppRun AppRun_2
-
         echo '#!/bin/bash
         HERE=$(cd "${0%/*}" && echo $PWD)
-        $HERE/runtime/bin/java -jar sacd_extract/SACDExtractGUI.jar' > AppRun
+        $HERE/runtime/bin/java -jar $HERE/sacd_extract/SACDExtractGUI.jar' > AppRun
         chmod +x AppRun
 
         cd ../
